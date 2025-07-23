@@ -51,7 +51,7 @@ function randomId() {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function safeUpsert(table: string, data: Record<string, any> | Record<string, any>[]) {
   try {
-    // @ts-expect-error
+    // @ts-expect-error -- Supabase aPI can be generic
     const { error } = await supabase.from(table).upsert(data);
     if (error) throw error;
   } catch {
@@ -60,9 +60,9 @@ async function safeUpsert(table: string, data: Record<string, any> | Record<stri
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-async function safeSelect(table: string, match: Record<string, any>) {
+async function _safeSelect(table: string, match: Record<string, any>) {
   try {
-    // @ts-expect-error
+    // @ts-expect-error -- Supabase API can be generic
     const { data, error } = await supabase.from(table).select('*').match(match);
     if (error) throw error;
     return data || [];
@@ -173,7 +173,7 @@ function generateDemoSutras(startIndex: number, count: number): Sutra[] {
 // ===================== Main Page Component =====================
 const HomePage: NextPage = () => {
   const router = useRouter();
-  const [session, setSession] = useState<Session | null>(null);
+  const [_session, setSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [authView, setAuthView] = useState<'login' | 'register'>('login');
   const [emailConfirmNeeded, setEmailConfirmNeeded] = useState(false);

@@ -48,9 +48,10 @@ function randomId() {
 }
 
 // Attempt Supabase upsert gracefully
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function safeUpsert(table: string, data: Record<string, any> | Record<string, any>[]) {
   try {
-    // @ts-ignore
+    // @ts-expect-error
     const { error } = await supabase.from(table).upsert(data);
     if (error) throw error;
   } catch {
@@ -58,9 +59,10 @@ async function safeUpsert(table: string, data: Record<string, any> | Record<stri
   }
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function safeSelect(table: string, match: Record<string, any>) {
   try {
-    // @ts-ignore
+    // @ts-expect-error
     const { data, error } = await supabase.from(table).select('*').match(match);
     if (error) throw error;
     return data || [];
@@ -108,7 +110,7 @@ function useReadingData(user: User | null) {
   useEffect(() => {
     setProgress(loadLocalJSON(progressKey, {}));
     setAnnotations(loadLocalJSON(annotationKey, []));
-  }, [userKey]);
+  }, [userKey, progressKey, annotationKey]);
 
   useEffect(() => { saveLocalJSON(progressKey, progress); }, [progressKey, progress]);
   useEffect(() => { saveLocalJSON(annotationKey, annotations); }, [annotationKey, annotations]);
@@ -266,7 +268,8 @@ const HomePage: NextPage = () => {
       } else if (data.session) {
         setMessage('注册成功');
       }
-    } catch (err: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} catch (err: any) {
       setError(err.message || '注册失败');
     } finally {
       setLoadingAuth(false);
@@ -293,7 +296,8 @@ const HomePage: NextPage = () => {
       } else {
         setMessage('登录成功');
       }
-    } catch (err: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} catch (err: any) {
       setError(err.message || '登录失败');
     } finally {
       setLoadingAuth(false);
@@ -322,7 +326,8 @@ const HomePage: NextPage = () => {
       if (resetError) throw resetError;
       setResetEmailSent(true);
       setMessage('重置邮件已发送，请检查邮箱。');
-    } catch (err: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} catch (err: any) {
       setError(err.message || '发送失败');
     }
   };
@@ -336,7 +341,8 @@ const HomePage: NextPage = () => {
       if (upErr) throw upErr;
       setMessage('密码已更新，正在跳转...');
       setTimeout(() => { setRecoveryMode(false); }, 1500);
-    } catch (err: any) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+	} catch (err: any) {
       setError(err.message || '更新失败');
     }
   };

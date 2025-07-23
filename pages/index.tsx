@@ -51,7 +51,6 @@ function randomId() {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function safeUpsert(table: string, data: Record<string, any> | Record<string, any>[]) {
   try {
-    // @ts-expect-error -- Supabase aPI can be generic
     const { error } = await supabase.from(table).upsert(data);
     if (error) throw error;
   } catch {
@@ -62,7 +61,6 @@ async function safeUpsert(table: string, data: Record<string, any> | Record<stri
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 async function _safeSelect(table: string, match: Record<string, any>) {
   try {
-    // @ts-expect-error -- Supabase API can be generic
     const { data, error } = await supabase.from(table).select('*').match(match);
     if (error) throw error;
     return data || [];
